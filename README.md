@@ -1,27 +1,51 @@
 # qwen-demo
 
-A multimodal demo project for exploring Qwen.
+一个用于面试展示和 GitHub 展示的 Qwen 全栈 Demo。
 
-## Overview
+完整需求设计文档见：[docs/requirements.md](./docs/requirements.md)
 
-This repository is intended to showcase how to build a simple Qwen demo that supports more than plain text chat. The goal is to provide a clean starting point for experimenting with text, image, and document inputs in one place.
+## 项目目标
 
-## Planned Features
+这个项目希望展示一个相对完整的 AI 应用，而不只是简单的模型调用示例。它将以本地部署、前后端分离的小项目形式，逐步实现文本对话、长会话、联网搜索和多模态理解能力。
 
-- Text chat with Qwen
-- Image upload and visual question answering
-- Document upload and content understanding
-- Unified conversation experience across different input types
-- A lightweight demo flow that is easy to extend
+## 产品形态
 
-## Current Status
+- 本地部署
+- 前后端分离
+- 左侧为项目 / 会话列表
+- 右侧为聊天区和附件区
 
-The repository is being initialized. The README currently describes the project direction, and the first runnable demo will be added next.
+## 核心能力
 
-## Roadmap
+- 文本问答
+- 多轮对话
+- 上下文压缩
+- 联网搜索开关
+- 搜索结果来源链接展示
+- 图片附件输入与理解
+- 文档附件输入与理解
 
-1. Set up the basic project structure
-2. Add a simple text chat demo
-3. Add image input support
-4. Add document input support
-5. Improve the overall demo experience
+## 输入类型
+
+- 文本
+- 图片
+- 文档：`md`、`pdf`、`docx`
+
+附件默认作为当前消息输入，后续再视需要扩展为项目级保存。
+
+## 阶段规划
+
+1. 基础框架 + 单轮文本问答
+2. 多轮对话 + 会话历史 + 上下文压缩
+3. 联网搜索 + 来源链接
+4. 图片 / 文档上传、理解、问答
+5. RAG / 项目级上下文
+
+## 暂不包含
+
+- 用户系统
+- 在线部署
+
+## 当前状态
+
+当前仓库处于需求整理和初始化阶段，接下来将从基础框架和单轮问答开始实现。
