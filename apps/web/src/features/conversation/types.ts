@@ -6,7 +6,7 @@ export interface Message {
   role: MessageRole;
   content: string;
   sequence: number;
-  status: "completed" | "failed";
+  status: "completed" | "failed" | "pending";
   created_at: string;
 }
 

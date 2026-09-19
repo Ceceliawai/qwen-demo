@@ -1,5 +1,9 @@
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
+export function getApiUrl(path: string): string {
+  return `${apiBaseUrl}${path}`;
+}
+
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers);
 
@@ -7,7 +11,7 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
     headers.set("Content-Type", "application/json");
   }
 
-  const response = await fetch(`${apiBaseUrl}${path}`, {
+  const response = await fetch(getApiUrl(path), {
     ...init,
     headers,
   });

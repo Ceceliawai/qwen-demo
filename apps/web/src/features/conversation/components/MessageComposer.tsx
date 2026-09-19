@@ -13,8 +13,12 @@ export function MessageComposer({ isSending, error, onSend }: MessageComposerPro
   const submit = async () => {
     const normalizedContent = content.trim();
     if (!normalizedContent || isSending) return;
-    await onSend(normalizedContent);
     setContent("");
+    try {
+      await onSend(normalizedContent);
+    } catch {
+      // The message list renders the failed assistant placeholder.
+    }
   };
 
   return (
@@ -43,8 +47,9 @@ export function MessageComposer({ isSending, error, onSend }: MessageComposerPro
           type="button"
           disabled={!content.trim() || isSending}
           onClick={() => void submit()}
+          title={isSending ? "请等待当前回答完成" : "发送消息"}
         >
-          {isSending ? "生成中…" : "发送 →"}
+          发送 →
         </button>
       </div>
     </div>

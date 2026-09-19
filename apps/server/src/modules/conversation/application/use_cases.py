@@ -1,3 +1,4 @@
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -17,6 +18,19 @@ from modules.execution.application.response_executor import (
 class CreateConversationCommand:
     title: str | None = None
     project_id: UUID | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class MessageDelta:
+    content: str
+
+
+@dataclass(frozen=True, slots=True)
+class MessageCompleted:
+    conversation: Conversation
+
+
+type SendMessageStreamEvent = MessageDelta | MessageCompleted
 
 
 class CreateConversation:
@@ -78,3 +92,33 @@ class SendMessage:
         conversation.add_message(MessageRole.ASSISTANT, result.content)
         await self._repository.save(conversation)
         return conversation
+
+    async def stream(
+        self, conversation_id: UUID, content: str
+    ) -> AsyncIterator[SendMessageStreamEvent]:
+        conversation = await self._repository.get(conversation_id)
+        if conversation is None:
+            raise ConversationNotFoundError(conversation_id)
+
+        user_message = conversation.add_message(MessageRole.USER, content)
+        history = tuple(
+            {"role": message.role.value, "content": message.content}
+            for message in conversation.messages
+            if message.id != user_message.id
+        )
+        await self._repository.save(conversation)
+
+        chunks: list[str] = []
+        async for chunk in self._executor.stream(
+            ExecutionRequest(
+                conversation_id=conversation.id,
+                user_content=user_message.content,
+                history=history,
+            )
+        ):
+            chunks.append(chunk)
+            yield MessageDelta(content=chunk)
+
+        conversation.add_message(MessageRole.ASSISTANT, "".join(chunks))
+        await self._repository.save(conversation)
+        yield MessageCompleted(conversation=conversation)

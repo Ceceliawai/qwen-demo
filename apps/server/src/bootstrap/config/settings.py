@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     bailian_api_key: str = ""
     bailian_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
     bailian_chat_model: str = "qwen-plus"
+    bailian_request_timeout_seconds: float = 60.0
+    bailian_max_tokens: int = 2048
     web_origin: str = "http://localhost:5173"
 
     model_config = SettingsConfigDict(

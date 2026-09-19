@@ -390,6 +390,69 @@ textarea:focus-visible {
   background: var(--color-user-bubble);
 }
 
+.message-bubble--pending {
+  min-width: 112px;
+  min-height: 49px;
+}
+
+.message-bubble--failed {
+  border-color: rgba(185, 133, 133, 0.3);
+  color: #9d6767;
+  background: rgba(185, 133, 133, 0.07);
+}
+
+.thinking-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+}
+
+.thinking-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(111, 137, 168, 0.2);
+  border-top-color: var(--color-brand-strong);
+  border-radius: 50%;
+  animation: thinking-spin 760ms linear infinite;
+}
+
+.streaming-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 4px;
+  border-radius: 2px;
+  vertical-align: -0.15em;
+  background: var(--color-brand);
+  animation: streaming-pulse 850ms ease-in-out infinite;
+}
+
+@keyframes thinking-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes streaming-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking-spinner,
+  .streaming-cursor {
+    animation: none;
+  }
+}
+
 .message-meta {
   margin-top: 5px;
   color: var(--color-text-muted);

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import type { Message } from "../types";
 
 interface MessageListProps {
@@ -5,6 +7,13 @@ interface MessageListProps {
 }
 
 export function MessageList({ messages }: MessageListProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (container) container.scrollTop = container.scrollHeight;
+  }, [messages]);
+
   if (messages.length === 0) {
     return (
       <div className="empty-state">
@@ -20,7 +29,7 @@ export function MessageList({ messages }: MessageListProps) {
   }
 
   return (
-    <div className="messages-scroll" aria-live="polite">
+    <div className="messages-scroll" aria-live="polite" ref={scrollRef}>
       {[...messages]
         .sort((left, right) => left.sequence - right.sequence)
         .map((message) => (
@@ -30,7 +39,26 @@ export function MessageList({ messages }: MessageListProps) {
           >
             {message.role === "assistant" && <div className="message-avatar">◈</div>}
             <div className="message-content">
-              <div className="message-bubble">{message.content}</div>
+              <div
+                className={`message-bubble message-bubble--${message.status}`}
+                aria-busy={message.status === "pending"}
+              >
+                {message.role === "assistant" &&
+                message.status === "pending" &&
+                !message.content ? (
+                  <span className="thinking-indicator" role="status">
+                    <span className="thinking-spinner" aria-hidden="true" />
+                    思考中
+                  </span>
+                ) : (
+                  <>
+                    {message.content}
+                    {message.role === "assistant" && message.status === "pending" && (
+                      <span className="streaming-cursor" aria-label="正在生成" />
+                    )}
+                  </>
+                )}
+              </div>
               <div className="message-meta">{message.role === "user" ? "你" : "Qwen"}</div>
             </div>
           </article>
