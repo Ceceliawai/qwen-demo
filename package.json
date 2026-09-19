@@ -1,0 +1,12 @@
+{
+  "name": "qwen-demo",
+  "private": true,
+  "scripts": {
+    "dev:server": "uv run uvicorn --app-dir apps/server/src main:app --reload --port 8000",
+    "dev:web": "pnpm --dir apps/web dev",
+    "build": "pnpm --dir apps/web build",
+    "lint": "pnpm --dir apps/web lint",
+    "test": "pnpm --dir apps/web test"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

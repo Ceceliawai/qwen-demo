@@ -1,0 +1,1 @@
+"""Manual dependency composition root."""
