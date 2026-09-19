@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import type { Message } from "../types";
 
@@ -52,7 +54,15 @@ export function MessageList({ messages }: MessageListProps) {
                   </span>
                 ) : (
                   <>
-                    {message.content}
+                    {message.role === "assistant" ? (
+                      <div className="markdown-content">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      message.content
+                    )}
                     {message.role === "assistant" && message.status === "pending" && (
                       <span className="streaming-cursor" aria-label="正在生成" />
                     )}

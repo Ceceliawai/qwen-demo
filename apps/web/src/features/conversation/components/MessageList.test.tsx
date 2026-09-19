@@ -29,3 +29,21 @@ test("shows streamed content with a generation cursor", () => {
   expect(screen.getByText("正在回答")).toBeInTheDocument();
   expect(screen.getByLabelText("正在生成")).toBeInTheDocument();
 });
+
+test("renders assistant content as GitHub-flavored Markdown", () => {
+  render(
+    <MessageList
+      messages={[
+        message({
+          content: "## 回答\n\n- **重点**\n- ~~旧内容~~\n\n| 名称 | 状态 |\n| --- | --- |\n| API | 正常 |",
+          status: "completed",
+        }),
+      ]}
+    />,
+  );
+
+  expect(screen.getByRole("heading", { name: "回答" })).toBeInTheDocument();
+  expect(screen.getByText("重点").tagName).toBe("STRONG");
+  expect(screen.getByText("旧内容").tagName).toBe("DEL");
+  expect(screen.getByRole("table")).toBeInTheDocument();
+});
