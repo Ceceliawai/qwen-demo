@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 
@@ -8,27 +7,19 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test("renders a successful backend health status", async () => {
+test("renders the branded workspace welcome state", async () => {
   vi.stubGlobal(
     "fetch",
     vi.fn().mockResolvedValue(
-      new Response(JSON.stringify({ status: "ok", service: "qwen-demo-server" }), {
+      new Response(JSON.stringify([]), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       }),
     ),
   );
 
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  });
+  render(<App />);
 
-  render(
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>,
-  );
-
-  expect(screen.getByRole("heading", { name: "AI 工作台正在初始化" })).toBeInTheDocument();
-  expect(await screen.findByText("Backend connected")).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "和 Qwen 开始工作" })).toBeInTheDocument();
+  expect(screen.getByText("QWEN WORKSPACE")).toBeInTheDocument();
 });

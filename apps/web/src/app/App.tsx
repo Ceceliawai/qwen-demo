@@ -1,33 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import { getHealth } from "../services/health";
+import { WorkspaceLayout } from "../features/conversation/components/WorkspaceLayout";
+import { ConversationPage } from "../features/conversation/pages/ConversationPage";
+import { WelcomePage } from "../features/conversation/pages/WelcomePage";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 15_000,
+      retry: false,
+    },
+  },
+});
 
 export function App() {
-  const health = useQuery({
-    queryKey: ["health"],
-    queryFn: getHealth,
-    retry: false,
-  });
-
-  const statusLabel = health.isPending
-    ? "正在检查后端连接"
-    : health.isSuccess
-      ? "Backend connected"
-      : "Backend unavailable";
-
   return (
-    <main className="workspace-shell">
-      <section className="workspace-card" aria-labelledby="app-title">
-        <p className="eyebrow">QWEN DEMO · FOUNDATION</p>
-        <h1 id="app-title">AI 工作台正在初始化</h1>
-        <p className="description">
-          前后端工程骨架已经建立。下一步将接入项目、会话和百炼 Qwen 文本问答。
-        </p>
-        <div className="status-pill">
-          <span className="status-dot" aria-hidden="true" />
-          {statusLabel}
-        </div>
-      </section>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        <Routes>
+          <Route element={<WorkspaceLayout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="conversations/:conversationId" element={<ConversationPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }

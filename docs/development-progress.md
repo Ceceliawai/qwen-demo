@@ -59,8 +59,8 @@
 - [x] 建立 FastAPI 应用和 `/health` 接口
 - [x] 建立 `bootstrap/config` 配置读取
 - [x] 建立 `bootstrap/container` 手工依赖装配位置
-- [ ] 建立 SQLAlchemy Async Session
-- [ ] 建立 Alembic 迁移
+- [x] 建立 SQLAlchemy Async Session
+- [x] 建立 Alembic 迁移
 - [ ] 建立统一错误响应
 - [x] 建立 API v1 Router
 
@@ -75,22 +75,22 @@
 
 ### 4.4 Conversation 模块
 
-- [ ] 定义 Conversation、Message 和 Citation
-- [ ] 定义 ConversationRepository
-- [ ] 实现 CreateConversation
-- [ ] 实现 ListConversations
-- [ ] 实现 GetConversation
-- [ ] 实现 SendMessage
-- [ ] 实现消息和会话持久化
-- [ ] 实现 Conversation HTTP API
-- [ ] 增加领域和应用测试
+- [x] 定义 Conversation、Message（Citation 后续加入）
+- [x] 定义 ConversationRepository
+- [x] 实现 CreateConversation
+- [x] 实现 ListConversations
+- [x] 实现 GetConversation
+- [x] 实现 SendMessage
+- [x] 实现消息和会话持久化
+- [x] 实现 Conversation HTTP API
+- [x] 增加领域和应用测试
 
 ### 4.5 Execution 与 Model
 
-- [ ] 定义 `ResponseExecutor`
-- [ ] 定义 `ExecutionRequest` 和 `ExecutionResult`
+- [x] 定义 `ResponseExecutor`
+- [x] 定义 `ExecutionRequest` 和 `ExecutionResult`
 - [ ] 定义 `ModelGateway` 和标准模型类型
-- [ ] 实现 `DirectResponseExecutor`
+- [x] 实现 Fake/Direct Response Executor
 - [ ] 实现 `BailianQwenAdapter`
 - [ ] 实现 Qwen 流式事件转换
 - [ ] 使用 Fake Model 完成应用测试
@@ -98,15 +98,15 @@
 
 ### 4.6 前端
 
-- [ ] 建立应用路由和整体工作台布局
+- [x] 建立应用路由和整体工作台布局
 - [ ] 实现项目列表和项目切换
-- [ ] 实现会话列表和会话切换
-- [ ] 实现消息列表
-- [ ] 实现 Composer
+- [x] 实现会话列表和会话切换
+- [x] 实现消息列表
+- [x] 实现 Composer
 - [ ] 实现 SSE 流式消息展示
-- [ ] 实现 Loading、Empty 和 Error 状态
+- [x] 实现 Loading、Empty 和 Error 状态
 - [ ] 实现 Markdown 渲染
-- [ ] 增加关键组件测试
+- [x] 增加关键组件测试
 
 ### 4.7 第一阶段验收
 
@@ -125,10 +125,10 @@
 
 | 字段 | 当前值 |
 |---|---|
-| 工作项 | Conversation 前端页面与百炼接入前的收尾 |
+| 工作项 | 百炼 Qwen 接入与 SSE 流式回复 |
 | 状态 | 待开始 |
 | 前置条件 | 已满足 |
-| 下一动作 | 根据 Conversation API 实现会话列表、消息列表和发送消息页面 |
+| 下一动作 | 定义 ModelGateway、实现 BailianQwenAdapter，并先替换 FakeResponseExecutor |
 | 阻塞项 | 无 |
 | 最近验证 | Conversation 后端测试/Lint/类型检查及前端测试/Lint/构建全部通过 |
 
@@ -153,7 +153,7 @@
 
 ## 7. 开发记录
 
-### 2026-09-19：建立工程骨架与 Conversation 后端闭环
+### 2026-09-19：建立工程骨架、Conversation 后端与前端页面
 
 完成：
 
@@ -168,6 +168,10 @@
 - 实现创建、列表、详情和发送消息 API
 - 接入 `FakeResponseExecutor`，完成用户消息和助手消息持久化
 - 增加领域、API 和配置测试
+- 实现明亮蓝色莫兰迪视觉 Token 和品牌化工作台布局
+- 实现可折叠会话侧边栏、消息气泡、空状态和 Composer
+- 接入会话列表、创建、详情和发送消息 API
+- 添加 React Query 缓存更新、加载/错误状态和响应式布局
 
 验证：
 
@@ -193,7 +197,7 @@
 
 下一步：
 
-- 实现 Conversation 前端页面，并将 Fake 回复替换为百炼 Qwen
+- 将 Fake 回复替换为百炼 Qwen，并保持当前页面交互不变
 
 ### 2026-09-17：设计阶段完成
 
